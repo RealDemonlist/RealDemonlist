@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real Demonlist | Official</title>
+    <title>Real Demonlist | Paint & Play</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -18,13 +18,19 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
-        
+        /* Анимации */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        
         body { 
             background-color: var(--bg-color); 
             color: var(--text-main); 
@@ -43,7 +49,11 @@
             position: sticky; top: 0; z-index: 1000;
         }
 
-        .logo { font-size: 22px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: var(--transition); }
+        .logo { 
+            font-size: 22px; font-weight: 800; cursor: pointer; 
+            text-transform: uppercase; letter-spacing: 2px; 
+            transition: var(--transition);
+        }
         .logo:hover { color: var(--accent-color); text-shadow: 0 0 15px var(--accent-glow); }
 
         .nav-btn { 
@@ -57,23 +67,39 @@
             background: rgba(255, 255, 255, 0.05); padding: 8px 18px; 
             border-radius: 10px; cursor: pointer; font-weight: 600; 
             border: 1px solid rgba(255, 255, 255, 0.1); transition: var(--transition);
+            display: flex; align-items: center; gap: 12px;
         }
         .user-badge:hover { border-color: var(--accent-color); background: rgba(59, 130, 246, 0.1); }
+        .user-badge img { width: 30px; height: 30px; border-radius: 6px; }
 
-        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; animation: fadeIn 0.6s ease-out forwards; }
+        .container { 
+            max-width: 900px; margin: 40px auto; padding: 0 20px; 
+            animation: fadeIn 0.6s ease-out forwards; 
+        }
 
         .tabs { display: flex; gap: 25px; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; }
-        .tab { cursor: pointer; color: var(--text-muted); font-weight: 700; font-size: 18px; transition: var(--transition); position: relative; }
+        .tab { 
+            cursor: pointer; color: var(--text-muted); font-weight: 700; 
+            font-size: 18px; transition: var(--transition); position: relative; 
+        }
         .tab.active { color: var(--accent-color); }
-        .tab.active::after { content: ''; position: absolute; bottom: -16px; left: 0; width: 100%; height: 3px; background: var(--accent-color); border-radius: 2px; }
+        .tab.active::after { 
+            content: ''; position: absolute; bottom: -16px; left: 0; 
+            width: 100%; height: 3px; background: var(--accent-color); 
+        }
 
         .level-card, .player-card {
             background-color: var(--surface-color); border-radius: var(--border-radius);
             padding: 20px; display: flex; align-items: center; gap: 20px; 
             border: 1px solid rgba(255, 255, 255, 0.03); cursor: pointer;
             transition: var(--transition); margin-bottom: 15px;
+            animation: slideIn 0.4s ease-out;
         }
-        .level-card:hover, .player-card:hover { transform: translateX(10px) scale(1.02); background-color: var(--surface-hover); border-color: var(--accent-color); }
+        .level-card:hover, .player-card:hover { 
+            transform: translateX(10px) scale(1.02); 
+            background-color: var(--surface-hover); 
+            border-color: var(--accent-color); 
+        }
 
         .level-img { width: 160px; height: 90px; border-radius: 12px; background-size: cover; background-position: center; background-color: #1c1c28; flex-shrink: 0; }
         
@@ -85,19 +111,31 @@
 
         .card {
             background-color: var(--surface-color); padding: 40px; border-radius: 24px;
-            width: 100%; max-width: 450px; margin: 60px auto; border: 1px solid rgba(255, 255, 255, 0.05);
+            width: 100%; max-width: 500px; margin: 60px auto; border: 1px solid rgba(255, 255, 255, 0.05);
             box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            animation: fadeIn 0.5s ease-out;
         }
 
-        .input-field { width: 100%; padding: 16px; margin: 10px 0 20px; background: var(--bg-color); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; color: white; outline: none; transition: var(--transition); }
+        /* Paint Tools */
+        .paint-area { background: #1c1c28; padding: 20px; border-radius: 15px; margin-bottom: 20px; text-align: center; }
+        #avatar-canvas { 
+            background: white; border-radius: 10px; cursor: crosshair; 
+            touch-action: none; display: block; margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .paint-controls { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
+        .color-dot { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid rgba(255,255,255,0.1); }
+        .btn-sm { padding: 5px 12px; font-size: 11px; text-transform: uppercase; border-radius: 6px; border: none; cursor: pointer; font-weight: 700; }
+
+        .input-field { width: 100%; padding: 16px; margin: 10px 0; background: var(--bg-color); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: white; outline: none; transition: var(--transition); }
         .input-field:focus { border-color: var(--accent-color); }
         
-        .action-btn { width: 100%; padding: 16px; background: var(--accent-color); border: none; border-radius: 14px; color: white; font-weight: 700; cursor: pointer; transition: var(--transition); font-size: 16px; }
+        .action-btn { width: 100%; padding: 16px; background: var(--accent-color); border: none; border-radius: 12px; color: white; font-weight: 700; cursor: pointer; transition: var(--transition); font-size: 16px; }
         .action-btn:hover { filter: brightness(1.2); transform: translateY(-2px); }
 
         .hidden { display: none !important; }
         .back-link { cursor: pointer; color: var(--text-muted); display: inline-block; margin-bottom: 20px; font-weight: 600; transition: var(--transition); }
-        .back-link:hover { color: white; transform: translateX(-5px); }
+        .back-link:hover { color: white; }
     </style>
 </head>
 <body>
@@ -109,38 +147,45 @@
         </div>
     </header>
 
+    <!-- Главная -->
     <div id="page-home" class="container">
         <div class="tabs">
             <div class="tab active" id="tab-levels" onclick="switchTab('levels')">Уровни</div>
             <div class="tab" id="tab-players" onclick="switchTab('players')">Топ игроков</div>
         </div>
-
-        <div id="section-levels">
-            <div id="levels-list"></div>
-        </div>
-
-        <div id="section-players" class="hidden">
-            <div id="players-list"></div>
-        </div>
+        <div id="section-levels"><div id="levels-list"></div></div>
+        <div id="section-players" class="hidden"><div id="players-list"></div></div>
     </div>
 
+    <!-- Детали уровня -->
     <div id="page-level-detail" class="container hidden">
         <div class="back-link" onclick="showPage('home')">← Назад к списку</div>
         <div class="video-container" id="video-frame"></div>
-        <div style="margin-bottom: 10px;">
-            <h1 id="det-name" style="font-size: 36px; font-weight: 800;"></h1>
-        </div>
+        <h1 id="det-name" style="font-size: 36px; font-weight: 800; margin-bottom: 5px;"></h1>
         <p id="det-author" style="color: var(--text-muted); font-size: 18px; margin-bottom: 30px;"></p>
-
         <div class="victors-box">
             <h3 style="margin-bottom:15px;">Victors (Прошедшие):</h3>
             <div id="victors-list"></div>
         </div>
     </div>
 
+    <!-- Авторизация / Регистрация -->
     <div id="page-auth" class="container hidden">
         <div class="card">
             <h2 id="auth-title" style="text-align: center; margin-bottom: 25px;">Авторизация</h2>
+            
+            <div id="reg-customization" class="hidden">
+                <div class="paint-area">
+                    <canvas id="avatar-canvas" width="200" height="200"></canvas>
+                    <div class="paint-controls">
+                        <input type="color" id="brush-color" style="border:none; width:30px; height:30px; background:none; cursor:pointer;">
+                        <button class="btn-sm" style="background: #444; color:white;" onclick="setBrushSize(5)">Тонко</button>
+                        <button class="btn-sm" style="background: #444; color:white;" onclick="setBrushSize(12)">Толсто</button>
+                        <button class="btn-sm" style="background: #ef4444; color:white;" onclick="clearCanvas()">Сброс</button>
+                    </div>
+                </div>
+            </div>
+
             <input type="text" id="auth-user" class="input-field" placeholder="Никнейм">
             <input type="password" id="auth-pass" class="input-field" placeholder="Пароль">
             <button class="action-btn" onclick="handleAuth()">Продолжить</button>
@@ -148,47 +193,67 @@
         </div>
     </div>
 
+    <!-- Профиль -->
     <div id="page-profile" class="container hidden">
         <div class="card" style="text-align: center;">
-            <div style="width: 80px; height: 80px; background: var(--accent-color); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 800;" id="user-avatar">?</div>
+            <div id="profile-avatar-container" style="margin-bottom: 20px; display: flex; justify-content: center;"></div>
             <h2 id="profile-name" style="margin-bottom: 30px;">User</h2>
             <button class="action-btn" style="background: #ef4444;" onclick="logout()">Выйти из системы</button>
         </div>
     </div>
 
     <script>
-        // ==========================================
-        // НАСТРОЙКИ КОНТЕНТА (РЕДАКТИРУЙ ТУТ)
-        // ==========================================
-        
+        // База данных
         const levels = [
-            {
-                name: "Silent TarTar",
-                author: "GmdObosralsya",
-                img: "https://i9.ytimg.com/vi/hheiktJXVds/mqdefault.jpg?v=69fe023a&sqp=CMSr_s8G&rs=AOn4CLBxF9HtdiHVdhGrMAj-VjbVYyo_9A",
-                video: "https://www.youtube.com/watch?v=hheiktJXVds",
-                victors: ["GmdObosralsya","rcelestial"]
-            },
+            { name: "Silent TarTar", author: "GmdObosralsya", video: "hheiktJXVds", img: "https://i.ytimg.com/vi/hheiktJXVds/maxresdefault.jpg", victors: ["GmdObosralsya","rcelestial"]},
         ];
-
-        const topPlayers = [
-            { name: "GmdObosralsya", points: 1500 },
-            { name: "rcelestial", points: 1450 },
-            { name: "rspace21", points: 0 },
-            { name: "gdmyasik1", points: 0 }
-        ];
-
-        // ==========================================
-        // ЛОГИКА ПРИЛОЖЕНИЯ
-        // ==========================================
+        const topPlayers = [{ name: "GmdObosralsya", points: 1500 }, { name: "rcelestial", points: 1450 }];
 
         let currentUser = localStorage.getItem('list_user') || null;
         let isLoginMode = true;
 
+        // Логика рисования
+        const canvas = document.getElementById('avatar-canvas');
+        const ctx = canvas.getContext('2d');
+        let painting = false;
+        let brushSize = 8;
+
+        function initPaint() {
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            function start(e) { painting = true; draw(e); }
+            function end() { painting = false; ctx.beginPath(); }
+            function draw(e) {
+                if(!painting) return;
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX || e.touches[0].clientX) - rect.left;
+                const y = (e.clientY || e.touches[0].clientY) - rect.top;
+                
+                ctx.lineWidth = brushSize;
+                ctx.lineCap = "round";
+                ctx.strokeStyle = document.getElementById('brush-color').value;
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+            }
+            canvas.onmousedown = start; canvas.onmouseup = end; canvas.onmousemove = draw;
+            canvas.ontouchstart = start; canvas.ontouchend = end; canvas.ontouchmove = draw;
+        }
+
+        function clearCanvas() { ctx.fillStyle = "white"; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+        function setBrushSize(s) { brushSize = s; }
+
+        // Функционал кнопок и переключения страниц
         function showPage(id) {
-            document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
-            document.getElementById('page-' + id).classList.remove('hidden');
-            window.scrollTo(0,0);
+            document.querySelectorAll('.container').forEach(c => {
+                c.classList.add('hidden');
+                c.style.animation = 'none'; // Сброс анимации для повторного срабатывания
+            });
+            const activePage = document.getElementById('page-' + id);
+            activePage.classList.remove('hidden');
+            activePage.style.animation = 'fadeIn 0.6s ease-out';
         }
 
         function switchTab(tab) {
@@ -198,85 +263,85 @@
             document.getElementById('tab-players').classList.toggle('active', tab === 'players');
         }
 
-        function renderAll() {
-            // Рендер уровней
-            const lCont = document.getElementById('levels-list');
-            lCont.innerHTML = '';
-            levels.forEach((l, i) => {
-                lCont.innerHTML += `
-                    <div class="level-card" onclick="openLevel(${i})">
-                        <div class="level-img" style="background-image: url('${l.img}')"></div>
-                        <div style="flex-grow:1">
-                            <div style="font-weight:800; font-size:20px;">${l.name}</div>
-                            <div style="color:var(--text-muted); font-size:14px;">by ${l.author}</div>
-                        </div>
-                        <div style="text-align:right">
-                            <div style="font-weight:700; color:var(--accent-color)">${l.victors.length} VICTORS</div>
-                        </div>
-                    </div>`;
-            });
-
-            // Рендер топа игроков
-            const pCont = document.getElementById('players-list');
-            pCont.innerHTML = '';
-            topPlayers.sort((a,b) => b.points - a.points).forEach((p, i) => {
-                pCont.innerHTML += `
-                    <div class="player-card">
-                        <div style="font-weight:800; font-size:20px; color:var(--accent-color); width:40px;">#${i+1}</div>
-                        <div style="flex-grow:1; font-weight:700; font-size:18px;">${p.name}</div>
-                        <div style="font-weight:800; background:rgba(255,255,255,0.05); padding:8px 15px; border-radius:10px;">${p.points} PTS</div>
-                    </div>`;
-            });
-        }
-
-        let activeLvlIdx = null;
         function openLevel(i) {
-            activeLvlIdx = i;
             const l = levels[i];
             document.getElementById('det-name').innerText = l.name;
             document.getElementById('det-author').innerText = 'by ' + l.author;
-            
-            let vid = l.video.includes('v=') ? l.video.split('v=')[1].split('&')[0] : l.video.split('be/')[1];
-            document.getElementById('video-frame').innerHTML = `<iframe src="https://www.youtube.com/embed/${vid}" allowfullscreen></iframe>`;
-
-            const vCont = document.getElementById('victors-list');
-            vCont.innerHTML = l.victors.map(v => `<span class="victor-tag">${v}</span>`).join('');
-
+            document.getElementById('video-frame').innerHTML = `<iframe src="https://www.youtube.com/embed/${l.video}" allowfullscreen></iframe>`;
+            document.getElementById('victors-list').innerHTML = l.victors.map(v => `<span class="victor-tag">${v}</span>`).join('');
             showPage('level-detail');
+        }
+
+        // Авторизация
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            document.getElementById('auth-title').innerText = isLoginMode ? "Авторизация" : "Регистрация";
+            document.getElementById('reg-customization').classList.toggle('hidden', isLoginMode);
+            document.getElementById('auth-toggle').innerText = isLoginMode ? "Нет аккаунта? Регистрация" : "Уже есть аккаунт? Войти";
+            if(!isLoginMode) setTimeout(initPaint, 100);
         }
 
         function handleAuth() {
             const user = document.getElementById('auth-user').value;
-            if(!user) return alert("Введите ник!");
+            if(!user) return alert("Введите никнейм");
+            
             currentUser = user;
             localStorage.setItem('list_user', user);
+            
+            if(!isLoginMode) {
+                const imgData = canvas.toDataURL("image/png");
+                localStorage.setItem(`avatar_${user}`, imgData);
+            }
+            
             updateHeader();
+            renderPlayers();
             showPage('home');
         }
 
-        function toggleAuthMode() {
-            isLoginMode = !isLoginMode;
-            document.getElementById('auth-title').innerText = isLoginMode ? "Авторизация" : "Регистрация";
-            document.getElementById('auth-toggle').innerText = isLoginMode ? "Нет аккаунта? Регистрация" : "Уже есть аккаунт? Войти";
+        function getAvatarImg(user) {
+            const data = localStorage.getItem(`avatar_${user}`);
+            return data ? `<img src="${data}">` : `<div style="width:30px; height:30px; background:#333; border-radius:6px;"></div>`;
         }
 
         function updateHeader() {
             if(currentUser) {
-                document.getElementById('header-auth').innerHTML = `<div class="user-badge" onclick="showProfile()">${currentUser}</div>`;
+                document.getElementById('header-auth').innerHTML = `
+                    <div class="user-badge" onclick="showProfile()">
+                        ${getAvatarImg(currentUser)}
+                        <span>${currentUser}</span>
+                    </div>`;
             }
+        }
+
+        function renderAll() {
+            document.getElementById('levels-list').innerHTML = levels.map((l, i) => `
+                <div class="level-card" onclick="openLevel(${i})">
+                    <div class="level-img" style="background-image: url('${l.img}')"></div>
+                    <div style="flex-grow:1"><div style="font-weight:800; font-size:20px;">${l.name}</div><div style="color:var(--text-muted); font-size:14px;">by ${l.author}</div></div>
+                    <div style="font-weight:700; color:var(--accent-color)">${l.victors.length} VICTORS</div>
+                </div>`).join('');
+            renderPlayers();
+        }
+
+        function renderPlayers() {
+            document.getElementById('players-list').innerHTML = topPlayers.map((p, i) => `
+                <div class="player-card">
+                    <div style="font-weight:800; font-size:20px; color:var(--accent-color); width:40px;">#${i+1}</div>
+                    <div style="flex-grow:1; display:flex; align-items:center; gap:12px;">${getAvatarImg(p.name)} <b>${p.name}</b></div>
+                    <div style="font-weight:800; background:rgba(255,255,255,0.05); padding:8px 15px; border-radius:10px;">${p.points} PTS</div>
+                </div>`).join('');
         }
 
         function showProfile() {
             document.getElementById('profile-name').innerText = currentUser;
-            document.getElementById('user-avatar').innerText = currentUser[0].toUpperCase();
+            const data = localStorage.getItem(`avatar_${currentUser}`);
+            document.getElementById('profile-avatar-container').innerHTML = data ? `<img src="${data}" style="width:160px; height:160px; border-radius:24px; border:4px solid var(--accent-color); box-shadow: 0 0 30px var(--accent-glow);">` : '';
             showPage('profile');
         }
 
-        function logout() {
-            localStorage.removeItem('list_user');
-            location.reload();
-        }
+        function logout() { localStorage.removeItem('list_user'); location.reload(); }
 
+        // Старт
         updateHeader();
         renderAll();
     </script>
